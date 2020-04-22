@@ -2,10 +2,17 @@
     纯粹的使用C，完成一个简单的小的学生系统
     功能：
         增删改查
+        目前只实现了增
     目的：
         锻炼使用指针，和结构体
         强化关于文件的读写操作
+    后期改善目标：
+        完善删除和修改功能
+        完成头文件和.c文件的分离
+        是否可以和CJSON进行整合
         没有处理关于内存泄露问题
+    今天：
+        完成删查改
 */
 #include"stdio.h"
 #include"stdlib.h"
@@ -20,7 +27,10 @@ char option;                    //取得用户操作选项
 
 int main(int argc, char ** argv)    //这里的参数暂时没有使用
 {
-    initSys();
+    if( initSys()==-1 ) 
+    {
+	return -1;
+    }
     //1.初始化链表
     //initList();
     //2.进行功能选择
@@ -77,6 +87,10 @@ void manageList(void)
 
 void addStudent(void)
 {
+    if( studentList==NULL )
+    {
+	initList();
+    }
     if( studentList->age == -1 )    //此时对应链表为空的时候
     {
         printf("the name of the student: ");
@@ -225,6 +239,7 @@ void delStudentList(studentTypeDef* students)
         free(students);
     }
     printf("delete list successfully\n");
+    students = NULL;			   
 }
 /*
     进行显示学生信息
